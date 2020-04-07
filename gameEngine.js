@@ -26,6 +26,7 @@ export default class Game {
             }
         }
     }
+
     setupNewGame() {
         for (let i = 0; i < 7; i++) {
             let health1 = Math.floor(Math.random() * Math.floor(3))
@@ -149,7 +150,7 @@ export const loadElementsintoDOM = function()
         }
 
     }, true);
-    $('#root').append(loadMinions());
+    $('#root').append(loadMinionsRecruit());
 };
 
 $(function() {
