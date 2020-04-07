@@ -88,6 +88,7 @@ export const loadMinionsAttack = function () {
             <th>${game.boardO[6].maxHealth}</th>
             </tr><tr>
             <th>${game.myHp}</th>
+            <button class = "submitB" type = "submit">Attack!</button>
             </tr><tr>
             </table>
             `
@@ -123,9 +124,12 @@ export const loadMinionsRecruit = function () {
 export const loadElementsintoDOM = function()
 {
     const $root = $('#root');
-    document.addEventListener('click', function(event)
-    {
+
+    $('#root').on("click", ".submitB", function(event) {
+        event.preventDefault();
         if (game.state === "Attack") {
+            event.preventDefault();
+            game.state = "Attack";
             game.doAttacks();
             game.level++;
             game.createBoard(game.level);
@@ -135,22 +139,20 @@ export const loadElementsintoDOM = function()
             game.state = "Recruit";
         }
 
-        if (game.state === "Recruit") {
+        if (game.state ==- "Recruit") {
             const $root = $('#root');
             $('root').empty();
             $('#root').append(loadMinionsRecruit());
-            $('#root').on("click", ".submitB", function(event) {
-                event.preventDefault();
-                game.state = "Attack";
-            })
-            $('#root').on("click", ".buyable", function(event) {
-                event.preventDefault();
-                let id = $(this).attr('id');
-                game.board[id] = game.buyboard[id];
-            })
+            game.state = "Attack";
         }
+    })
+    
+    $('#root').on("click", ".buyable", function(event) {
+        event.preventDefault();
+        let id = $(this).attr('id');
+        game.board[id] = game.buyboard[id];
+    })
 
-    }, true);
     $('#root').append(loadMinionsRecruit());
 };
 
