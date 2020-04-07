@@ -128,6 +128,7 @@ export const loadElementsintoDOM = function()
     $('#root').on("click", ".submitB", function(event) {
         event.preventDefault();
         console.log(game.state);
+        console.log(game.level);
         if (game.state === "Attack") {
             event.preventDefault();
             game.doAttacks();
