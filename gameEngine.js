@@ -15,6 +15,7 @@ export default class Game {
         this.level = level;
         this.state = state;
         this.buyboard = buyboard;
+        game.createBoard(3);
     }
 
     createBoard(level) {
