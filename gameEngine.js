@@ -85,6 +85,7 @@ export const loadElementsintoDOM = function()
     {
         game.doAttacks();
         const $root = $('#root');
+        $('root').empty();
         $('#root').append(loadMinions());
     }, true);
     $('#root').append(loadMinions());
@@ -93,3 +94,4 @@ export const loadElementsintoDOM = function()
 $(function() {
     loadElementsintoDOM();
 });
+
