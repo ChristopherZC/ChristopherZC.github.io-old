@@ -124,12 +124,12 @@ export const loadMinionsRecruit = function () {
 export const loadElementsintoDOM = function()
 {
     const $root = $('#root');
-
+    let gameState = "Attack";
     $('#root').on("click", ".submitB", function(event) {
         event.preventDefault();
         console.log(game.state);
         console.log(game.level);
-        if (game.state === "Attack") {
+        if (gameState === "Attack") {
             event.preventDefault();
             game.doAttacks();
             game.level++;
@@ -137,14 +137,14 @@ export const loadElementsintoDOM = function()
             const $root = $('#root');
             $('#root').empty();
             $('#root').append(loadMinionsAttack());
-            game.state = "Recruit";
+            gameState = "Recruit";
         }
 
-        if (game.state === "Recruit") {
+        if (gameState === "Recruit") {
             const $root = $('#root');
             $('#root').empty();
             $('#root').append(loadMinionsRecruit());
-            game.state = "Attack";
+            gameState = "Attack";
         }
     })
 
