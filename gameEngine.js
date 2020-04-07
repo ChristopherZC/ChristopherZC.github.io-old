@@ -139,7 +139,7 @@ export const loadElementsintoDOM = function()
             game.state = "Recruit";
         }
 
-        if (game.state ==- "Recruit") {
+        if (game.state === "Recruit") {
             const $root = $('#root');
             $('#root').empty();
             $('#root').append(loadMinionsRecruit());
