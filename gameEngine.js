@@ -131,13 +131,14 @@ export const loadElementsintoDOM = function()
         console.log(game.level);
         if (gameState === "Attack") {
             event.preventDefault();
+            gameState = "Recruit";
             game.doAttacks();
             game.level++;
             game.createBoard(game.level);
             const $root = $('#root');
             $('#root').empty();
             $('#root').append(loadMinionsAttack());
-            gameState = "Recruit";
+
         }
 
         if (gameState === "Recruit") {
