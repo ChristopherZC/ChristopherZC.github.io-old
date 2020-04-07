@@ -128,7 +128,7 @@ export const loadElementsintoDOM = function()
         if (game.state === "Attack") {
             game.doAttacks();
             game.level++;
-            game.createBoard(level);
+            game.createBoard(game.level);
             const $root = $('#root');
             $('root').empty();
             $('#root').append(loadMinionsAttack());
