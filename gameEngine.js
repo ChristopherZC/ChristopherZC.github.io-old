@@ -15,7 +15,6 @@ export default class Game {
         this.level = level;
         this.state = state;
         this.buyboard = buyboard;
-        game.createBoard(3);
     }
 
     createBoard(level) {
@@ -66,6 +65,7 @@ export default class Game {
 
 let game = new Game();
 game.setupNewGame();
+game.createBoard();
 
 export const loadMinionsAttack = function () {
     return `<table id="GameTable" style="width:100%"><tr>
@@ -127,6 +127,8 @@ export const loadElementsintoDOM = function()
     {
         if (game.state.equalsIgnoreCase("Attack")) {
             game.doAttacks();
+            game.level++;
+            game.createBoard(level);
             const $root = $('#root');
             $('root').empty();
             $('#root').append(loadMinionsAttack());
@@ -136,8 +138,6 @@ export const loadElementsintoDOM = function()
         if (game.state.equalsIgnoreCase("Recruit")) {
             const $root = $('#root');
             $('root').empty();
-            game.createBoard(game.level);
-            game.level++;
             $('#root').append(loadMinionsRecruit());
             $('#root').on("click", ".submitB", function(event) {
                 event.preventDefault();
@@ -158,3 +158,4 @@ $(function() {
     loadElementsintoDOM();
 });
 
+console.log(game.state);
