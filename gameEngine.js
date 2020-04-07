@@ -125,7 +125,7 @@ export const loadElementsintoDOM = function()
     const $root = $('#root');
     document.addEventListener('click', function(event)
     {
-        if (game.state.equalsIgnoreCase("Attack")) {
+        if (game.state === "Attack") {
             game.doAttacks();
             game.level++;
             game.createBoard(level);
@@ -135,7 +135,7 @@ export const loadElementsintoDOM = function()
             game.state = "Recruit";
         }
 
-        if (game.state.equalsIgnoreCase("Recruit")) {
+        if (game.state === "Recruit") {
             const $root = $('#root');
             $('root').empty();
             $('#root').append(loadMinionsRecruit());
