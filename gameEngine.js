@@ -129,24 +129,23 @@ export const loadElementsintoDOM = function()
         event.preventDefault();
         if (game.state === "Attack") {
             event.preventDefault();
-            game.state = "Attack";
             game.doAttacks();
             game.level++;
             game.createBoard(game.level);
             const $root = $('#root');
-            $('root').empty();
+            $('#root').empty();
             $('#root').append(loadMinionsAttack());
             game.state = "Recruit";
         }
 
         if (game.state ==- "Recruit") {
             const $root = $('#root');
-            $('root').empty();
+            $('#root').empty();
             $('#root').append(loadMinionsRecruit());
             game.state = "Attack";
         }
     })
-    
+
     $('#root').on("click", ".buyable", function(event) {
         event.preventDefault();
         let id = $(this).attr('id');
