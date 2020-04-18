@@ -1,12 +1,14 @@
 export default class Game {
     constructor() {
         let myHp = 40;
-        let level = 4;
+        let level = 3;
         let opHp = 40;
         let board = [];
         let boardO = [];
         let buyboard = [];
+        let dmg = 0;
         let state = "Attack";
+        let loser = "";
         this.board = board;
         this.boardO = boardO;
         this.phase = null;
@@ -15,26 +17,27 @@ export default class Game {
         this.level = level;
         this.state = state;
         this.buyboard = buyboard;
+        this.loser = "op";
     }
 
     createBoard(level) {
         for (let i = 0; i < 7; i++) {
-            let health1 = Math.floor(Math.random() * Math.floor(level))
+            let health1 = Math.floor(Math.random() * Math.floor(level)) + 1;
             this.buyboard[i] = {
-                attack: Math.floor(Math.random() * Math.floor(level)),
+                attack: Math.floor(Math.random() * Math.floor(level)) + 1,
                 currentHealth: health1, maxHealth: health1
-            }
+            };
         }
     }
 
     setupNewGame() {
         for (let i = 0; i < 7; i++) {
-            let health1 = Math.floor(Math.random() * Math.floor(3))
-            this.board[i] = {attack: Math.floor(Math.random() * Math.floor(3)),
+            let health1 = Math.floor(Math.random() * Math.floor(3)) + 1;
+            this.board[i] = {attack: Math.floor(Math.random() * Math.floor(3)) + 1,
                 currentHealth: health1, maxHealth: health1}
 
-            let health2 = Math.floor(Math.random() * Math.floor(3))
-            this.boardO[i] = {attack: Math.floor(Math.random() * Math.floor(3)),
+            let health2 = Math.floor(Math.random() * Math.floor(4)) + 1;
+            this.boardO[i] = {attack: Math.floor(Math.random() * Math.floor(4)) + 1,
                 currentHealth: health2, maxHealth: health2}
         }
     }
@@ -42,6 +45,7 @@ export default class Game {
     doAttacks() {
         let myScore = 0;
         let oScore = 0;
+        let dmg = 0;
         for (let i = 0; i < this.board.length; i++) {
             if (this.board[i].currentHealth > 0 && this.boardO[i].currentHealth > 0) {
                 this.board[i].currentHealth = this.board[i].currentHealth - this.boardO[i].attack;
@@ -56,70 +60,85 @@ export default class Game {
             }
         }
         if (myScore > oScore) {
-            this.opHp = this.opHp - this.level;
+            for (let i = 0; i < this.board.length; i++) {
+                if (this.boardO[i].currentHealth > 0) {
+                    dmg = dmg + this.board[i].attack;
+                }
+            }
+            this.loser = "op";
+            this.dmg = dmg;
         } else if (myScore < oScore) {
-            this.myHp = this.myHp - this.level;
+            for (let i = 0; i < this.boardO.length; i++) {
+                if (this.boardO[i].currentHealth > 0) {
+                    dmg = dmg + this.boardO[i].attack;
+                }
+            }
+            this.loser = "me";
+            this.dmg = dmg;
         }
     }
 }
 
 let game = new Game();
 game.setupNewGame();
-game.createBoard();
+game.createBoard(3);
 
-export const loadMinionsAttack = function () {
-    return `<table id="GameTable" style="width:100%"><tr>
+export const loadMinionsAttack = function() {
+    let dom = `<table id="GameTable" style="width:100%"><tr>
             <th>${game.opHp}</th>
-            </tr><tr>
-            <th>${game.board[0].maxHealth}</th>
-            <th>${game.board[1].maxHealth}</th>
-            <th>${game.board[2].maxHealth}</th>
-            <th>${game.board[3].maxHealth}</th>
-            <th>${game.board[4].maxHealth}</th>
-            <th>${game.board[5].maxHealth}</th>
-            <th>${game.board[6].maxHealth}</th>
-            </tr><tr>
-            <th>${game.boardO[0].maxHealth}</th>
-            <th>${game.boardO[1].maxHealth}</th>
-            <th>${game.boardO[2].maxHealth}</th>
-            <th>${game.boardO[3].maxHealth}</th>
-            <th>${game.boardO[4].maxHealth}</th>
-            <th>${game.boardO[5].maxHealth}</th>
-            <th>${game.boardO[6].maxHealth}</th>
-            </tr><tr>
-            <th>${game.myHp}</th>
-            <button class = "submitB" type = "submit">Attack!</button>
-            </tr><tr>
-            </table>
-            `
-};
-
+            </tr><tr>`
+    for (let i = 0; i < game.board.length; i++) {
+        dom = dom + `<th class="minion">${game.boardO[i].maxHealth} Minion name here ${game.boardO[i].attack}</th>`;
+    }
+    dom = dom + `</tr><tr>`
+    for (let i = 0; i < game.boardO.length; i++) {
+        dom = dom +  `<th class="minion" >${ game.board[i].maxHealth } minion name here ${game.board[i].attack}</th>`;
+    }
+    dom = dom +  `</tr><tr>
+        <th>${game.myHp}</th>
+    </tr><tr>
+    </table><button class = "submitB" type = "submit">Attack!</button>
+        `
+    return dom;
+}
 export const loadMinionsRecruit = function () {
-    return `<table id="GameTable" style="width:100%"><tr>
+    let dom = `<table id="GameTable" style="..."><tr>
             <th>RECRUIT!</th>
-            </tr><tr>
-            <th class="buyable" id="0">${game.buyboard[0].maxHealth}</th>
-            <th class="buyable" id="1">${game.buyboard[1].maxHealth}</th>
-            <th class="buyable" id="2">${game.buyboard[2].maxHealth}</th>
-            <th class="buyable" id="3">${game.buyboard[3].maxHealth}</th>
-            <th class="buyable" id="4">${game.buyboard[4].maxHealth}</th>
-            <th class="buyable" id="5">${game.buyboard[5].maxHealth}</th>
-            <th class="buyable" id="6">${game.buyboard[6].maxHealth}</th>
-            </tr><tr>
-            <th>${game.boardO[0].maxHealth}</th>
-            <th>${game.boardO[1].maxHealth}</th>
-            <th>${game.boardO[2].maxHealth}</th>
-            <th>${game.boardO[3].maxHealth}</th>
-            <th>${game.boardO[4].maxHealth}</th>
-            <th>${game.boardO[5].maxHealth}</th>
-            <th>${game.boardO[6].maxHealth}</th>
-            </tr><tr>
-            <th>${game.myHp}</th>
-            <button class = "submitB" type = "submit">done</button>
-            </tr><tr>
-            </table>
+            </tr><tr>`
+    for (let i = 0; i < game.buyboard.length; i++) {
+        dom = dom + `<th class="buyable" id=${i}><a href="#">${ game.buyboard[i].maxHealth } name here ${game.buyboard[i].attack}</a></th>`;
+    }
+    dom = dom + `</tr><tr>`
+    for (let i = 0; i < game.boardO.length; i++) {
+        dom = dom +  `<th class="minion">${ game.board[i].maxHealth } name here ${game.board[i].attack}</th>`;
+    }
+    dom = dom +  `</tr><tr>
+        <th>${game.myHp}</th>
+        </tr><tr>
+        </table> <button class = "submitB" type = "submit">done</button>
             `
-};
+    return dom;
+}
+
+export const loadMinionsDefense = function () {
+    let dom = `<table id="GameTable" style="..."><tr>
+            <th>DEFEND!</th>
+            </tr><tr>`
+    for (let i = 0; i < 10; i++) {
+        dom = dom + `<th class="defend" id=${i} ><a href="#"> ${i} </a></th>`;
+    }
+    dom = dom + `</tr><tr>`
+    for (let i = 0; i < game.boardO.length; i++) {
+        dom = dom +  `<th class="minion">${ game.boardO[i].maxHealth }</th>`;
+    }
+    dom = dom +  `</tr><tr>
+        <th>${game.myHp}</th>
+        </tr><tr>
+        </table> <button class = "submitB" type = "submit">done</button>
+            `
+    return dom;
+}
+
 
 export const loadElementsintoDOM = function()
 {
@@ -127,32 +146,51 @@ export const loadElementsintoDOM = function()
     let gameState = "Attack";
     $('#root').on("click", ".submitB", function(event) {
         event.preventDefault();
-        console.log(game.state);
-        console.log(game.level);
-        if (gameState === "Attack") {
-            event.preventDefault();
-            gameState = "Recruit";
+        console.log(game.opHp);
+        if (game.state === "Attack") {
+            game.state = "Defend";
             game.doAttacks();
+            console.log(game.dmg);
             game.level++;
             game.createBoard(game.level);
             const $root = $('#root');
             $('#root').empty();
             $('#root').append(loadMinionsAttack());
 
-        }
+        } else if (game.state === "Defend") {
+            if (game.loser === "op") {
+                $('#root').empty();
+                $('#root').append(loadMinionsRecruit());
+                game.state = "Attack";
+                game.opHp = game.opHp - 5;
+            } else {
+                game.state = "Recruit";
+                $('#root').empty();
+                $('#root').append(loadMinionsDefense());
+            }
 
-        if (gameState === "Recruit") {
-            const $root = $('#root');
+        } else if (game.state=== "Recruit") {
             $('#root').empty();
             $('#root').append(loadMinionsRecruit());
-            gameState = "Attack";
+            game.state = "Attack";
         }
+    })
+
+    $('#root').on("click", ".defend", function(event) {
+        event.preventDefault();
+        let id = $(this).attr('id');
+        game.myHp = game.myHp - game.dmg % id;
+        $('#root').empty();
+        $('#root').append(loadMinionsRecruit());
+        game.state = "Attack";
     })
 
     $('#root').on("click", ".buyable", function(event) {
         event.preventDefault();
         let id = $(this).attr('id');
+        console.log(id + " bought");
         game.board[id] = game.buyboard[id];
+        game.createBoard(game.level);
     })
 
     $('#root').append(loadMinionsRecruit());
@@ -161,5 +199,3 @@ export const loadElementsintoDOM = function()
 $(function() {
     loadElementsintoDOM();
 });
-
-console.log(game.state);

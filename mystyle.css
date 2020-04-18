@@ -1,0 +1,23 @@
+.minion, .buyable {
+    width: 10%;
+    height: 40%;
+}
+
+table {
+   position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 90%;
+    width: 90%;
+}
+td a:hover {
+    background: blue;
+}
+
+.submitB {
+    position: fixed;
+    z-index: 2;
+    bottom: 0;
+}
