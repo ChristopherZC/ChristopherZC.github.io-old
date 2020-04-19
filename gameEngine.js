@@ -121,8 +121,13 @@ export const loadMinionsRecruit = function () {
         dom = dom +  `<th class="minion">${ game.board[i].maxHealth } name here ${game.board[i].attack}</th>`;
     }
     dom = dom +  `</tr><tr>`
-    dom = dom + `<th class = "image", src = "Coin_website.png"></th></tr><tr>
-         <th class = "hpBar">${game.myHp}</th>`
+    for (let i =0; i < game.level; i++) {
+        dom = dom + `<td><img class = "image", src = "Coin_website.png"></td>`
+    }
+    /*for (let i = game.level; i < 7; i++) {
+        dom = dom + `<img class = "image", src = "No_Coin_website.png"></img>`
+    }*/
+    dom = dom + `</td></tr><th class = "hpBar">${game.myHp}</th>`
     for (let i = 0; i < 40; i++) {
         i = i + 6;
         dom = dom +  `<th class = "hpBar"></th>`;
