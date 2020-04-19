@@ -1,5 +1,5 @@
 .minion, .buyable {
-    width: 10%;
+    width: 14%;
     height: 40%;
 }
 
@@ -10,7 +10,7 @@ table {
     left: 0;
     right: 0;
     height: 90%;
-    width: 90%;
+    width: 100%;
 }
 td a:hover {
     background: blue;
@@ -36,4 +36,8 @@ td a:hover {
 .enemyHP {
     background-color: red;
     color: white;
+}
+
+.image {
+    position: relative;
 }
