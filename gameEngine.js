@@ -85,8 +85,12 @@ game.createBoard(3);
 
 export const loadMinionsAttack = function() {
     let dom = `<table id="GameTable" style="width:100%"><tr>
-            <th>${game.opHp}</th>
-            </tr><tr>`
+            <th class = "enemyHP">${game.opHp}</th>`;
+    for (let i = 0; i < 40; i++) {
+        i = i + 6;
+        dom = dom +  `<th class = "enemyHP"></th>`;
+    }
+    dom = dom + `</tr><tr>`
     for (let i = 0; i < game.board.length; i++) {
         dom = dom + `<th class="minion">${game.boardO[i].maxHealth} Minion name here ${game.boardO[i].attack}</th>`;
     }
@@ -95,15 +99,19 @@ export const loadMinionsAttack = function() {
         dom = dom +  `<th class="minion" >${ game.board[i].maxHealth } minion name here ${game.board[i].attack}</th>`;
     }
     dom = dom +  `</tr><tr>
-        <th>${game.myHp}</th>
     </tr><tr>
-    </table><button class = "submitB" type = "submit">Attack!</button>
+    <th class = "hpBar">${game.myHp}</th>`
+    for (let i = 0; i < 40; i++) {
+        i = i + 6;
+        dom = dom +  `<th class = "hpBar"></th>`;
+    }
+    dom = dom + `</table><button class = "submitB" type = "submit">Attack!</button>
         `
     return dom;
 }
 export const loadMinionsRecruit = function () {
     let dom = `<table id="GameTable" style="..."><tr>
-            <th>RECRUIT!</th>
+            //<th>RECRUIT!</th>
             </tr><tr>`
     for (let i = 0; i < game.buyboard.length; i++) {
         dom = dom + `<th class="buyable" id=${i}><a href="#">${ game.buyboard[i].maxHealth } name here ${game.buyboard[i].attack}</a></th>`;
@@ -113,8 +121,13 @@ export const loadMinionsRecruit = function () {
         dom = dom +  `<th class="minion">${ game.board[i].maxHealth } name here ${game.board[i].attack}</th>`;
     }
     dom = dom +  `</tr><tr>
-        <th>${game.myHp}</th>
         </tr><tr>
+         <th class = "hpBar">${game.myHp}</th>`
+    for (let i = 0; i < 40; i++) {
+        i = i + 6;
+        dom = dom +  `<th class = "hpBar"></th>`;
+    }
+    dom = dom + `
         </table> <button class = "submitB" type = "submit">done</button>
             `
     return dom;
@@ -132,8 +145,8 @@ export const loadMinionsDefense = function () {
         dom = dom +  `<th class="minion">${ game.boardO[i].maxHealth }</th>`;
     }
     dom = dom +  `</tr><tr>
-        <th>${game.myHp}</th>
         </tr><tr>
+        <th class = "hpBar">${game.myHp}</th>
         </table> <button class = "submitB" type = "submit">done</button>
             `
     return dom;

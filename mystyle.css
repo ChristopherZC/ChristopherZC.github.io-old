@@ -21,3 +21,19 @@ td a:hover {
     z-index: 2;
     bottom: 0;
 }
+
+.hpBar {
+    background-color: #4CAF59;
+    color: white;
+}
+
+.submitB {
+    left: 0;
+    height: 10%;
+    width: 100%;
+}
+
+.enemyHP {
+    background-color: red;
+    color: white;
+}
