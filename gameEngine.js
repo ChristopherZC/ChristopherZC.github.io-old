@@ -111,7 +111,7 @@ export const loadMinionsAttack = function() {
 }
 export const loadMinionsRecruit = function () {
     let dom = `<table id="GameTable" style="..."><tr>
-            //<th>RECRUIT!</th>
+            <th>RECRUIT!</th>
             </tr><tr>`
     for (let i = 0; i < game.buyboard.length; i++) {
         dom = dom + `<th class="buyable" id=${i}><a href="#">${ game.buyboard[i].maxHealth } name here ${game.buyboard[i].attack}</a></th>`;
@@ -120,8 +120,8 @@ export const loadMinionsRecruit = function () {
     for (let i = 0; i < game.boardO.length; i++) {
         dom = dom +  `<th class="minion">${ game.board[i].maxHealth } name here ${game.board[i].attack}</th>`;
     }
-    dom = dom +  `</tr><tr>
-        </tr><tr>
+    dom = dom +  `</tr><tr>`
+    dom = dom + `<th class = "image", src = "Coin_website.png"></th></tr><tr>
          <th class = "hpBar">${game.myHp}</th>`
     for (let i = 0; i < 40; i++) {
         i = i + 6;
