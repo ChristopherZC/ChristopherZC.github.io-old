@@ -1,6 +1,6 @@
 # ChristopherZC.github.io
 
-Link to front page: https://kmoran1512.github.io/Math-Battle/
+Link to front page, please start here: https://kmoran1512.github.io/Math-Battle/
 ReadMe copy pasted from kmoran1512:
 
 # Math-Battle
