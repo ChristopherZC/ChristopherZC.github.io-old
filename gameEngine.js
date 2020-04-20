@@ -1,3 +1,6 @@
+import minionData from "./cardData.js"
+
+
 export default class Game {
     constructor() {
         let myHp = 40;
@@ -18,27 +21,30 @@ export default class Game {
         this.state = state;
         this.buyboard = buyboard;
         this.loser = "op";
+        let avail = [];
+        this.avail = avail;
+    }
+
+    getMinions(level) {
+        this.avail = minionData.filter(minion => minion.lvl <= this.level);
     }
 
     createBoard(level) {
+        this.getMinions(level);
         for (let i = 0; i < 7; i++) {
-            let health1 = Math.floor(Math.random() * Math.floor(level)) + 1;
+            /*let health1 = Math.floor(Math.random() * Math.floor(level)) + 1;
             this.buyboard[i] = {
                 attack: Math.floor(Math.random() * Math.floor(level)) + 1,
-                currentHealth: health1, maxHealth: health1
-            };
+                currentHealth: health1, maxHealth: health1 */
+            this.buyboard[i] = this.avail[Math.floor(Math.random() * this.avail.length)];
         }
     }
 
     setupNewGame() {
         for (let i = 0; i < 7; i++) {
-            let health1 = Math.floor(Math.random() * Math.floor(3)) + 1;
-            this.board[i] = {attack: Math.floor(Math.random() * Math.floor(3)) + 1,
-                currentHealth: health1, maxHealth: health1}
+            this.board[i] = this.avail[Math.floor(Math.random() * this.avail.length)];
 
-            let health2 = Math.floor(Math.random() * Math.floor(4)) + 1;
-            this.boardO[i] = {attack: Math.floor(Math.random() * Math.floor(4)) + 1,
-                currentHealth: health2, maxHealth: health2}
+            this.boardO[i] = this.avail[Math.floor(Math.random() * this.avail.length)];
         }
     }
 
@@ -47,22 +53,22 @@ export default class Game {
         let oScore = 0;
         let dmg = 0;
         for (let i = 0; i < this.board.length; i++) {
-            if (this.board[i].currentHealth > 0 && this.boardO[i].currentHealth > 0) {
-                this.board[i].currentHealth = this.board[i].currentHealth - this.boardO[i].attack;
-                this.boardO[i].currentHealth = this.boardO[i].currentHealth - this.board[i].attack;
-            } else {
-                if (this.board[i].currentHealth <= 0) {
-                    oScore++;
-                }
-                if (this.boardO[i].currentHealth <= 0) {
-                    myScore++;
-                }
+            let myMHP = this.board[i].health;
+            let oMHP = this.boardO[i].health;
+            while (oMHP > 0 && myMHP > 0) {
+                myMHP = myMHP - this.boardO[i].atk;
+                oMHP = oMHP - this.board[i].atk;
+            }
+            if (oMHP > 0) {
+                oScore++;
+            } else if (myMHP > 0) {
+                myScore++;
             }
         }
         if (myScore > oScore) {
             for (let i = 0; i < this.board.length; i++) {
                 if (this.boardO[i].currentHealth > 0) {
-                    dmg = dmg + this.board[i].attack;
+                    dmg = dmg + this.board[i].atk;
                 }
             }
             this.loser = "op";
@@ -70,7 +76,7 @@ export default class Game {
         } else if (myScore < oScore) {
             for (let i = 0; i < this.boardO.length; i++) {
                 if (this.boardO[i].currentHealth > 0) {
-                    dmg = dmg + this.boardO[i].attack;
+                    dmg = dmg + this.boardO[i].atk;
                 }
             }
             this.loser = "me";
@@ -80,6 +86,7 @@ export default class Game {
 }
 
 let game = new Game();
+game.getMinions(3);
 game.setupNewGame();
 game.createBoard(3);
 
@@ -92,11 +99,11 @@ export const loadMinionsAttack = function() {
     }
     dom = dom + `</tr><tr>`
     for (let i = 0; i < game.board.length; i++) {
-        dom = dom + `<th class="minion">${game.boardO[i].maxHealth} Minion name here ${game.boardO[i].attack}</th>`;
+        dom = dom + `<th class="minion"><img src = ${game.boardO[i].img} ></th>`;
     }
     dom = dom + `</tr><tr>`
     for (let i = 0; i < game.boardO.length; i++) {
-        dom = dom +  `<th class="minion" >${ game.board[i].maxHealth } minion name here ${game.board[i].attack}</th>`;
+        dom = dom +  `<th class="minion" ><img src = ${game.board[i].img} ></th>`;
     }
     dom = dom +  `</tr><tr>
     </tr><tr>
@@ -114,19 +121,18 @@ export const loadMinionsRecruit = function () {
             <th>RECRUIT!</th>
             </tr><tr>`
     for (let i = 0; i < game.buyboard.length; i++) {
-        dom = dom + `<th class="buyable" id=${i}><a href="#">${ game.buyboard[i].maxHealth } name here ${game.buyboard[i].attack}</a></th>`;
+        //dom = dom + `<th class="buyable" id=${i}><a href="#">${ game.buyboard[i].maxHealth } name here ${game.buyboard[i].attack}</a></th>`;
+        dom = dom + `<th class = "buyable" id=${i}><a href="#"><img src = ${game.buyboard[i].img} ></a></th>`
     }
     dom = dom + `</tr><tr>`
     for (let i = 0; i < game.boardO.length; i++) {
-        dom = dom +  `<th class="minion">${ game.board[i].maxHealth } name here ${game.board[i].attack}</th>`;
+        //dom = dom +  `<th class="minion">${ game.board[i].maxHealth } name here ${game.board[i].attack}</th>`;
+        dom = dom + `<th class = "buyable" id=${i}><a href="#"><img src = ${game.board[i].img} ></a></th>`
     }
     dom = dom +  `</tr><tr>`
     for (let i =0; i < game.level; i++) {
         dom = dom + `<td><img class = "image", src = "Coin_website.png"></td>`
     }
-    /*for (let i = game.level; i < 7; i++) {
-        dom = dom + `<img class = "image", src = "No_Coin_website.png"></img>`
-    }*/
     dom = dom + `</td></tr><th class = "hpBar">${game.myHp}</th>`
     for (let i = 0; i < 40; i++) {
         i = i + 6;
@@ -140,7 +146,7 @@ export const loadMinionsRecruit = function () {
 
 export const loadMinionsDefense = function () {
     let dom = `<table id="GameTable" style="..."><tr>
-            <th>DEFEND!</th>
+            <th>UNDER CONSTRUCTION</th>
             </tr><tr>`
     for (let i = 0; i < 10; i++) {
         dom = dom + `<th class="defend" id=${i} ><a href="#"> ${i} </a></th>`;
